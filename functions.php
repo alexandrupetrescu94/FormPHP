@@ -28,7 +28,14 @@ function valid_email($email){
 
 function get_registered_users($path = MAILING_LIST){
 	$users = file($path);
-	var_dump(explode(': ',$users[0]));
+	
+	if( count($users) ){
+		return array_map(function($user){
+			$bits = explode(': ',$user);
+			return array_map('htmlspecialchars',$bits);
+		}, $users);
+	}
+	return false;
 }
 
 ?>
