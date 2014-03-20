@@ -1,6 +1,7 @@
 <?php 
-define('MAILING_LIST','mailing_list.php ');
+define('MAILING_LIST',$_SERVER['DOCUMENT_ROOT'].'/FormPhp/mailing_list.php');
 
+// ADD A NEW ITEM TO THE REGISTERED USERS LIST.
 function add_registered_user($name, $email){
    /**
 	*$handle = fopen('mailing_list.php','a+');
@@ -15,6 +16,20 @@ function add_registered_user($name, $email){
     //FILE_APPEND add to the end
 }
 
+
+//RETURNS AN ARRAY OF ALL REGISTERED USERS
+function get_registered_users($path = MAILING_LIST){
+	$users = file($path);
+	
+	if( count($users) ){
+		return array_map(function($user){
+			return $bits = explode(': ',htmlspecialchars($user));
+		}, $users);
+	}
+	return false;
+}
+
+//PRESERVE FORM STATE
 function old($key){
 	if (!empty($_REQUEST[$key])){
 		return htmlspecialchars($_REQUEST[$key]);
@@ -22,20 +37,9 @@ function old($key){
 	return '';
 }
 
+//DETERMINES WHETHER THE EMAIL ADDRESS IS VALID
 function valid_email($email){
 	return filter_var($email,FILTER_VALIDATE_EMAIL);
-}
-
-function get_registered_users($path = MAILING_LIST){
-	$users = file($path);
-	
-	if( count($users) ){
-		return array_map(function($user){
-			$bits = explode(': ',$user);
-			return array_map('htmlspecialchars',$bits);
-		}, $users);
-	}
-	return false;
 }
 
 ?>
