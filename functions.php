@@ -1,4 +1,5 @@
 <?php 
+define('MAILING_LIST','mailing_list.php ');
 
 function add_registered_user($name, $email){
    /**
@@ -10,7 +11,7 @@ function add_registered_user($name, $email){
     */
 
     #REALLY IMPORTANT: SECURE FILE (place outside the folder)
-    file_put_contents('mailing_list.php', "{$name} : {$email}\n" , FILE_APPEND);
+    file_put_contents(MAILING_LIST, "{$name} : {$email}\n" , FILE_APPEND);
     //FILE_APPEND add to the end
 }
 
@@ -23,6 +24,11 @@ function old($key){
 
 function valid_email($email){
 	return filter_var($email,FILTER_VALIDATE_EMAIL);
+}
+
+function get_registered_users($path = MAILING_LIST){
+	$users = file($path);
+	var_dump(explode(': ',$users[0]));
 }
 
 ?>
